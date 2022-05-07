@@ -192,37 +192,8 @@ const Controls = () => {
                         </p>
                     ))
                 }</div>
-                <input type="text" name="msg" />
+                <input type="text" name="msg" placeholder='Send a message...' />
             </form>
-
-            <div className={styles.spells}>
-                <div className={styles.spellList}>
-                    {
-                        spells.map((e, i) => (
-                            <div style={{ opacity: !e.disabled ? 1 : 0.6 }} className={styles.spell} key={i} onClick={() => spellClicked(e)} onMouseEnter={() => spellMouseEnter(e.id)} onMouseLeave={() => spellMouseLeave(e.id)}>
-                                <div className={styles.spellTooltip} ref={el => spellsRef.current[e.id] = el}>
-                                    <h1>{e.name}</h1>
-                                    <p>{e.lifeSteal ? <GiDrippingSword style={{ color: "red" }} /> : <GiBroadsword style={{ color: "#a57d2a" }} />} <span>{e.damage[0] + stats.Damage}</span> - <span>{e.damage[1] + stats.Damage}</span></p>
-                                    <p><GiRoundStar style={{ color: "yellow" }} /> <span>{e.apCost} AP</span></p>
-                                </div>
-                                <div style={{ padding: 2 }}>
-                                    <Image
-                                        layout="responsive"
-                                        src={e.iconSrc}
-                                        height="40"
-                                        width="40"
-                                    />
-                                </div>
-
-                            </div>
-                        ))
-                    }
-                </div>
-                <div className={styles.milestone}>
-                    <p>{milestone.text}</p>
-                    <p>Pogress: {milestone.progress} / 200</p>
-                </div>
-            </div>
 
             <div className={styles.menu}>
                 <div className={styles.stats}>
@@ -261,6 +232,35 @@ const Controls = () => {
                             <button onClick={skipTurn}>Skip</button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div className={styles.spells}>
+                <div className={styles.spellList}>
+                    {
+                        spells.map((e, i) => (
+                            <div style={{ opacity: !e.disabled ? 1 : 0.6 }} className={styles.spell} key={i} onClick={() => spellClicked(e)} onMouseEnter={() => spellMouseEnter(e.id)} onMouseLeave={() => spellMouseLeave(e.id)}>
+                                <div className={styles.spellTooltip} ref={el => spellsRef.current[e.id] = el}>
+                                    <h1>{e.name}</h1>
+                                    <p>{e.lifeSteal ? <GiDrippingSword style={{ color: "red" }} /> : <GiBroadsword style={{ color: "#a57d2a" }} />} <span>{e.damage[0] + stats.Damage}</span> - <span>{e.damage[1] + stats.Damage}</span></p>
+                                    <p><GiRoundStar style={{ color: "yellow" }} /> <span>{e.apCost} AP</span></p>
+                                </div>
+                                <div style={{ padding: 2 }}>
+                                    <Image
+                                        layout="responsive"
+                                        src={e.iconSrc}
+                                        height="40"
+                                        width="40"
+                                    />
+                                </div>
+
+                            </div>
+                        ))
+                    }
+                </div>
+                <div className={styles.milestone}>
+                    <p>{milestone.text}</p>
+                    <p>Pogress: {milestone.progress} / 200</p>
                 </div>
             </div>
         </>

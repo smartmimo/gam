@@ -22,6 +22,18 @@
 	margin: 5px;
 }
 
+.consoleContainer input {
+	outline: 0;
+	background: #f2f2f2;
+	width: 100%;
+	border: 2px solid transparent;
+	padding: 5px 10px;
+	box-sizing: border-box;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: inherit;
+}
+
 .success {
 	color: #2c961e;
 }
@@ -114,6 +126,7 @@
 	flex-wrap: nowrap;
 	justify-content: space-evenly;
 	align-items: center;
+	font-weight: bold;
 }
 
 .stats>* {
@@ -159,7 +172,7 @@
 	padding: 0;
 	margin: 0;
 	font-weight: bold;
-	font-size: 80%;
+	font-size: 90%;
 }
 
 .turnMonitor {

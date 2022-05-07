@@ -317,6 +317,7 @@ const MapGrid = (props) => {
         else if (direction == "top") comingFrom = "bottom"
         else if (direction == "bottom") comingFrom = "top"
         socket.eventEmitter.once("ChangeMapNow", () => {
+            setLoading(true);
             socket.sendMessage("MapDataRequestMessage", {
                 id: neighborId,
                 comingFrom
@@ -498,6 +499,7 @@ const MapGrid = (props) => {
         }
     }
     const fillStatic = async (t, players, monsters) => {
+        setLoading(true)
         setEntities(entities => [])
         await drawStatic("background", mapData.static.id, t)
         for (const cellId in mapData.static.cells) {
@@ -539,9 +541,9 @@ const MapGrid = (props) => {
         for (const monsterGroup of monsters) {
             addMonsterGroup(monsterGroup)
         }
+        setLoading(false)
     }
     useEffect(() => {
-        setLoading(true)
         if (!mapData.static.id) return;
         const staticCanvas = staticRef.current;
         staticCanvas.style.visibility = "visible"
@@ -600,7 +602,6 @@ const MapGrid = (props) => {
             socket.eventEmitter.off("FightStartingMessage", FightStartingMessage)
             socket.eventEmitter.on("FightStartingMessage", FightStartingMessage)
         }
-        setLoading(false)
     }, [mainWidth, mainHeight, mapData])
 
 

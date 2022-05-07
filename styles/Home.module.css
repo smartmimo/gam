@@ -48,10 +48,32 @@
   padding: 0;
 }
 
-
 .closablePopup p {
   font-size:30px;
   padding: 30px;
+}
+
+
+.closablePopup button {
+  text-transform: uppercase;
+  outline: 0;
+  background: black;
+  border: 1px solid transparent;
+  padding: 15px;
+  cursor: pointer;
+  width: 200px;
+  font-weight: bold;
+  color: white;
+  font-family: inherit;
+}
+
+.closablePopup button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.closablePopup button:active {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid white;
 }
 
 .main {
