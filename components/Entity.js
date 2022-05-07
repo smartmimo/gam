@@ -111,26 +111,28 @@ class Entity extends React.Component {
 
         return new Promise(resolve => {
             const i = setInterval(() => {
+                var newX = this.state.x;
+                var newY = this.state.y
                 if (this.state.x != x) {
                     if (this.state.x < x) {
-                        this.state.x++
+                        newX++
                         if(this.originalSrc=="player.png") this.disposition = dispositions[this.originalSrc][2] //right
                     } else {
-                        this.state.x--
+                        newX--
                         if(this.originalSrc=="player.png") this.disposition = dispositions[this.originalSrc][1] //left
                     }
-                    if (Math.abs(this.state.x - x) <= 2) this.state.x = x
+                    if (Math.abs(this.state.x - x) <= 2) newX = x
                 }
                 if (this.state.y != y) {
                     if (this.state.y < y) {
-                        this.state.y++
+                        newY++
                         if(this.originalSrc=="player.png") this.disposition = dispositions[this.originalSrc][0] //bottom
                     } else {
-                        this.state.y--
+                        newY--
                         if(this.originalSrc=="player.png") this.disposition = dispositions[this.originalSrc][3] //top
 
                     }
-                    if (Math.abs(this.state.y - y) <= 2) this.state.y = y
+                    if (Math.abs(this.state.y - y) <= 2) newY = y
                 }
                 if (this.state.x == x && this.state.y == y) {
                     clearInterval(i)
@@ -138,8 +140,8 @@ class Entity extends React.Component {
                 }
 
                 this.setState({
-                    x: this.state.x,
-                    y: this.state.y,
+                    x: newX,
+                    y: newY,
                     frameY: -this.disposition * this.height
                 })
 
