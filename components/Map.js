@@ -331,7 +331,7 @@ const MapGrid = (props) => {
         const index = !direct ? getIdFromMouseEvent(ev) : direct;
         if ((index || index == 0) && isWalkable(mapData.static.cells[index])) {
             gridRef.current.style.cursor = "pointer"
-
+            
             if (socket.player.isFighting) {
                 if (socket.player.ourTurn) {
                     if (clickedSpell.range.length == 0) {

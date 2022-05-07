@@ -105,6 +105,7 @@ export default function Home() {
 
                 <div className={styles.container}>
                     <div className={styles.main} ref={mainRef}>
+                        <h2 style={{ position: "absolute", top: 0, left: 30 }}>[{mapData.static.x}-{mapData.static.y}]</h2>
                         <MapGrid mainHeight={mainSize.height} mainWidth={mainSize.width} mapData={mapData} />
                     </div>
                     <div className={styles.controls}>
