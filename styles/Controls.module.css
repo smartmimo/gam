@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Spectral:wght@300&display=swap');
+
+.consoleContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	width: 40vw;
+}
+
+.console {
+	background-color: black;
+	color: white;
+	overflow: auto;
+	height: 100%;
+	line-height: 1;
+	font-family: "Spectral", serif;
+	font-size: 0.95em;
+	padding: 5px;
+}
+
+.console p {
+	margin: 5px;
+}
+
+.success {
+	color: #2c961e;
+}
+
+.info {
+	/* color:#ee964b; */
+	color: yellow;
+}
+
+.error {
+	/* color:#de333b; */
+	color: red;
+}
+
+.warn {
+	color: #fca311;
+}
+
+.globalMsg {
+	color: white;
+}
+
+.spells {
+	background: grey;
+	width: 40vw;
+	position: relative;
+}
+
+.spellList {
+	height: 30%;
+	display: flex;
+}
+
+.milestone {
+	text-align: center;
+	height: 70%;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.spell {
+	width: 40px;
+	height: 40px;
+	overflow: auto;
+	background: rgb(236, 217, 217) no-repeat center center;
+	background-size: cover;
+	/* background-color: "white"; */
+	border-radius: 10px;
+	margin: 2px;
+	box-shadow: 0px 1px 3px gray inset;
+	padding: 2px;
+	cursor: pointer;
+}
+
+.spellTooltip {
+	position: absolute;
+	top: calc(80vh - 140px);
+	/* height: 100px; */
+	display: none;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 20px;
+	color: white;
+	padding: 2.5px 10px 2.5px 10px;
+	margin: 0;
+	text-align: center;
+	line-height: 50%;
+	z-index: 999;
+
+}
+
+.spellTooltip h1 {
+	font-size: 20px;
+}
+
+.spellTooltip p {
+	font-size: 18px;
+	text-align: center;
+	font-style: italic;
+}
+
+.menu {
+	position: relative;
+	width: 20vw;
+}
+
+.stats {
+	height: 50%;
+	line-height: 50%;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.stats>* {
+	max-width: 50%;
+}
+
+.health {
+	background: url("/heartBackground.png") no-repeat center center;
+	background-size: contain;
+	height: 100%;
+	width: 30% !important;
+	position: relative;
+}
+
+.health>* {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.healthOverlay {
+	background: url("/heartOverlay.png") no-repeat center center;
+	background-size: contain;
+}
+
+.healthPercentage {
+	background: url("/heartMask.png") no-repeat center center;
+	background-size: contain;
+	width: 80% !important;
+	height: 83% !important;
+	/* height:83% !important; */
+	left: 9.5%;
+	top: 2.49%;
+	/* background-clip: padding-box; */
+	/* padding-top: 100px; */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.healthPercentage>p {
+	padding: 0;
+	margin: 0;
+	font-weight: bold;
+	font-size: 80%;
+}
+
+.turnMonitor {
+	width: 100%;
+}
+
+.progress {
+	background-color: #d8d8d8;
+	border-radius: 20px;
+	position: relative;
+	margin: 15px 0;
+	height: 30px;
+
+	width: 100%;
+}
+
+.progressDone {
+	background: linear-gradient(to left, #F2709C, #FF9472);
+	box-shadow: 0 3px 3px -5px #F2709C, 0 2px 5px #F2709C;
+	border-radius: 20px;
+	color: #fff;
+	display: flex;
+	align-items: center;
+
+	height: 100%;
+	width: 0;
+	transition: 1s ease 0.3s;
+}
+
+.progressDone>button {
+	border-radius: 20px;
+}

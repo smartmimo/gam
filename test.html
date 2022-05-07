@@ -1,0 +1,124 @@
+<canvas id="myCanvas" width="2000px" height="2000px"></canvas>
+<div id="myDiv"></div>
+<script>
+
+    function getMapPointFromCellId(e) {
+        var t = e % 14 - ~~(e / 28),
+            i = t + 19,
+            n = t + ~~(e / 14);
+        return {
+            x: i,
+            y: n
+        }
+    }
+
+    function constructMapPoints() {
+        var mapPointToCellId = {}
+        for (var cellId = 0; cellId < 560; cellId++) {
+            var coord = getMapPointFromCellId(cellId);
+            mapPointToCellId[coord.x + '_' + coord.y] = cellId;
+        }
+        return (mapPointToCellId)
+    }
+    const mapPointToCellId = constructMapPoints();
+
+
+    var o = 43, //cell height
+        a = 86, //cell width
+        s = Math.round(1.5 * o);
+    const SEGMENT = Math.sqrt(Math.pow(a / 2, 2) + Math.pow(o / 2, 2))
+    const AREA = o * a / 2
+
+    var canvas = document.getElementById('myCanvas');
+    var t = canvas.getContext('2d');
+
+    // for (var cellId = 0; cellId < 560; cellId++) {
+    //     const coords = getMapPointFromCellId(cellId)
+    //     // t.clearRect(coords.x, coords.y, a, s);
+    t.fillStyle = "#5A523C";
+    t.strokeStyle = "#CCCCCC";
+
+    //     var i = [a / 2, a, a, a / 2, 0, 0],
+    //         n = [0, o / 2, o, s, o, o / 2];
+    //     t.beginPath();
+    //     t.moveTo(0, o / 2);
+    //     for (var r = 0; r < i.length; r++) t.lineTo(i[r],  n[r]);
+    //     t.closePath();
+    //     t.fill();
+    //     // t.stroke();
+    //     // t.lineTo(a / 2, o);
+    //     // t.lineTo(a, o / 2);
+    //     // t.moveTo(a / 2, o);
+    //     // t.lineTo(a / 2, s);
+    //     // t.stroke();
+    // }
+
+    function n(e) {
+        var t = e % 14,
+            i = Math.floor(e / 14);
+        return t += i % 2 * .5, {
+            x: t * a,
+            y: .5 * i * o
+        }
+    }
+    var l = []
+    function oz() {
+        for (var e = 0; e < 560; e += 1) l.push(n(e));
+        return Object.freeze(l), l
+    }
+    var cellCoord = oz()
+    console.log(cellCoord)
+    for (var cellId = 0; cellId < 560; cellId++) {
+        const coords = n(cellId)
+        const i = coords.x
+        const j = coords.y
+        t.beginPath();
+        t.moveTo(i, j);
+        t.lineTo(i + a / 2, j + o / 2); // fill in the pixel at (10,10)
+        t.lineTo(i, j + o); // fill in the pixel at (10,10)
+        t.lineTo(i - a / 2, j + o / 2); // fill in the pixel at (10,10)
+        t.closePath();
+        // t.fillRect(i,j,1,1)
+        t.fill()
+        t.stroke()
+        // break;
+    }
+    canvas.addEventListener('click', (ev) => {
+        const x = ev.offsetX;
+        const y = ev.offsetY;
+        const index = l.findIndex(function (e) {
+            const triangles = [
+                {
+                    A: distance({ x, y }, { x: e.x, y: e.y }),
+                    B: distance({ x, y }, { x: e.x + a / 2, y: e.y + o / 2 }),
+                    C: SEGMENT
+                },
+                {
+                    A: distance({ x, y }, { x: e.x + a / 2, y: e.y + o / 2 }),
+                    B: distance({ x, y }, { x: e.x, y: e.y + o }),
+                    C: SEGMENT
+                },
+                {
+                    A: distance({ x, y }, { x: e.x, y: e.y + o }),
+                    B: distance({ x, y }, { x: e.x - a / 2, y: e.y + o / 2 }),
+                    C: SEGMENT
+                },
+                {
+                    A: distance({ x, y }, { x: e.x - a / 2, y: e.y + o / 2 }),
+                    B: distance({ x, y }, { x: e.x, y: e.y }),
+                    C: SEGMENT
+                },
+            ]
+
+            return Math.round(triangles.map(function (triangle) {
+                const perimeter = (triangle.A + triangle.B + triangle.C) / 2;
+                return Math.sqrt(perimeter * (perimeter - triangle.A) * (perimeter - triangle.B) * (perimeter - triangle.C))
+            }).reduce((a, b) => a + b)) == AREA
+        });
+        console.log(index)
+    });
+
+    function distance(a, b) {
+        return Math.abs(Math.sqrt(Math.pow(b.y - a.y, 2) + Math.pow(b.x - a.x, 2)))
+    }
+</script>

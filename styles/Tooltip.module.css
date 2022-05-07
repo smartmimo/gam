@@ -1,0 +1,40 @@
+.tooltip {
+	position: absolute;
+	display: none;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 20px;
+	color: white;
+	padding: 2.5px 10px 2.5px 10px;
+	margin: 0;
+	text-align: center;
+	line-height: 50%;
+	z-index: 999;
+	
+}
+
+.oneliner {
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.oneliner>span {
+	font-weight: normal;
+	font-style: italic;
+}
+
+.name {
+	font-weight: bold;
+	white-space: nowrap;
+	overflow-wrap: break-word;
+}
+
+.level {
+	font-weight: normal;
+	font-style: italic;
+	white-space: nowrap;
+}
+
+.level>span {
+	color: green;
+	font-style: normal;
+}
