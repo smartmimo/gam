@@ -38,6 +38,10 @@ export default function Home() {
             socket = new ws("wss://lywa.ddns.net:443")
             socket.eventEmitter.on("ReadyMessage", payload => {
                 setLogged(true);
+
+                const { socket, data } = payload;
+                socket.player = data;
+                socket.sendMessage("MapDataRequestMessage", { id: data.mapId })
             })
 
             socket.eventEmitter.on("RegisterSuccessMessage", payload => {
