@@ -76,9 +76,6 @@ class Entity extends React.Component {
         // let row = this.disposition;
         this.setState({
             frameX: -column * this.width,
-            // frameY: -row * this.height
-            // x: this.state.x,
-            // y: this.state.y
         })
     }
     setArrow(arrow) {
