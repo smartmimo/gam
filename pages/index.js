@@ -35,7 +35,7 @@ export default function Home() {
 
         }
         if (!socket.eventEmitter) {
-            socket = new ws("ws://localhost:443")
+            socket = new ws("ws://lywa.ddns.net:443")
             socket.eventEmitter.on("ReadyMessage", payload => {
                 setLogged(true);
             })
