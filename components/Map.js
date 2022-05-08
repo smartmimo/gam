@@ -269,7 +269,7 @@ const MapGrid = (props) => {
 
     const cellClicked = async (ev, direct = false) => {
         const index = !direct ? getIdFromMouseEvent(ev) : direct;
-
+        
         if ((!index && index != 0) || !isWalkable(mapData.static.cells[index])) return;
 
         if (socket.player.isFighting) {
@@ -544,6 +544,7 @@ const MapGrid = (props) => {
         setLoading(false)
     }
     useEffect(() => {
+        setEntities([])
         if (!mapData.static.id) return;
         const staticCanvas = staticRef.current;
         staticCanvas.style.visibility = "visible"

@@ -145,22 +145,25 @@ const Controls = () => {
                 if (!socket.player.Fighters) return;
                 setMessages(messages => [...messages, { type: "success", content: `${payload.data.name}: ${payload.data.delta} HP.` }])
                 const node = consoleRef.current;
-                setTimeout(()=>node.scrollTop = node.scrollHeight, 100);
+                setTimeout(() => node.scrollTop = node.scrollHeight, 100);
             })
 
             socket.eventEmitter.on("FightDeathMessage", payload => {
                 if (!socket.player.Fighters) return;
                 setMessages(messages => [...messages, { type: "success", content: `${payload.data.name}: Dies.` }])
                 const node = consoleRef.current;
-                setTimeout(()=>node.scrollTop = node.scrollHeight, 100);
+                setTimeout(() => node.scrollTop = node.scrollHeight, 100);
             })
 
             socket.eventEmitter.on("FightEndMessage", payload => {
-                clearInterval(turn.i)
-                setTurn({
-                    currentTime: 0,
-                    maxTime: 0,
-                    i: 0
+
+                setTurn(t => {
+                    clearInterval(t.i);
+                    return {
+                        currentTime: 0,
+                        maxTime: 0,
+                        i: 0
+                    }
                 })
             })
 
