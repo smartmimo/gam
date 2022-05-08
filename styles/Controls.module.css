@@ -89,8 +89,8 @@
 }
 
 .spellTooltip {
-	position: absolute;
-	top: calc(80vh - 140px);
+	position: fixed;
+	top: calc(80vh - 120px);
 	/* height: 100px; */
 	display: none;
 	background-color: rgba(0, 0, 0, 0.7);
