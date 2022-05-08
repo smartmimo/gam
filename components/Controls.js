@@ -180,7 +180,7 @@ const Controls = () => {
         }
 
 
-    }, [])
+    }, [socket.eventEmitter])
 
     return (
         <>
