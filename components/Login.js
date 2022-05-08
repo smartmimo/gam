@@ -34,6 +34,8 @@ export default function Home() {
 
     useEffect(() => {
         if(socket.eventEmitter){
+            socket.eventEmitter.off("HelloErrorMessage")
+            socket.eventEmitter.off("RegisterErrorMessage")
             socket.eventEmitter.on("HelloErrorMessage", payload => {
                 setLogErr(payload.data.reason)
                 setLoading(false)
@@ -49,7 +51,7 @@ export default function Home() {
         loginRef.current.addEventListener("submit", cb1)
         registerRef.current.addEventListener("submit", cb2)
 
-    }, [])
+    }, [socket.eventEmitter])
 
     return (
         <div className = {styles.container}>
