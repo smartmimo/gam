@@ -52,7 +52,7 @@ const Controls = () => {
 
 
     useEffect(() => {
-        if (socket.eventEmitter) {
+        if (socket.eventEmitter && !socket.hooked.includes("controls")) {
             socket.eventEmitter.on("ServerChatMessage", payload => {
                 setMessages(messages => [...messages, payload.data])
                 const node = consoleRef.current;
@@ -96,24 +96,24 @@ const Controls = () => {
                 })
 
                 socket.player.ourTurn = true;
-                // setTurn({
-                //     currentTime: 0,
-                //     maxTime: payload.data.duration,
-                //     i: setInterval(() => {
-                //         setTurn(turn => {
-                //             if (turn.currentTime >= turn.maxTime && turn.i != 0) {
-                //                 console.log(turn)
-                //                 clearInterval(turn.i)
-                //                 skipTurn()
-                //             }
-                //             return ({
-                //                 currentTime: turn.currentTime + 1000,
-                //                 maxTime: payload.data.duration,
-                //                 i: turn.i
-                //             })
-                //         })
-                //     }, 1000)
-                // })
+                setTurn({
+                    currentTime: 0,
+                    maxTime: payload.data.duration,
+                    i: setInterval(() => {
+                        setTurn(turn => {
+                            if (turn.currentTime >= turn.maxTime && turn.i != 0) {
+                                console.log(turn)
+                                clearInterval(turn.i)
+                                skipTurn()
+                            }
+                            return ({
+                                currentTime: turn.currentTime + 1000,
+                                maxTime: payload.data.duration,
+                                i: turn.i
+                            })
+                        })
+                    }, 1000)
+                })
             })
 
             socket.eventEmitter.on("SpellCastMessage", payload => {
@@ -177,6 +177,8 @@ const Controls = () => {
                     content: e.target.children[1].value
                 })
             })
+
+            socket.hooked.push("controls")
         }
 
 

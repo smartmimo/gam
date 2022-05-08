@@ -9,6 +9,7 @@ export default class extends W3CWebSocket {
         this.eventEmitter = new eventEmitter()
         this.eventEmitter.on(listeners);
         
+        this.hooked = []
         this.onmessage = payload => {
             const { message, data } = JSON.parse(payload.data);
             this.eventEmitter.emit(message, {socket: this, data})

@@ -602,7 +602,7 @@ const MapGrid = (props) => {
             socket.eventEmitter.off("FightStartingMessage", FightStartingMessage)
             socket.eventEmitter.on("FightStartingMessage", FightStartingMessage)
         }
-    }, [mainWidth, mainHeight, mapData, socket.eventEmitter])
+    }, [mainWidth, mainHeight, mapData])
 
 
     return (
