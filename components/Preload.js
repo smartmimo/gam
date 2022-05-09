@@ -4,18 +4,20 @@ import Image from "next/image"
 import styles from "../styles/Preload.module.css";
 
 
-const Preload = ({noOverlay}) => {
+const Preload = ({p}) => {
   return (
-      <>
-        {!noOverlay ? (<div className = {styles.overlay}></div>) : (<></>)}
-        <div className={styles.preload}>
-          <Image
-            src="/preload.png"
-            layout="fill"
-          />
-        </div>
-        </>
-    
+    <>
+      <div className={styles.overlay}></div>
+      <div className={styles.preload}>
+        <Image
+          src="/preload.png"
+          layout="fill"
+        />
+        {(p || p == 0) ? <p>{p}%</p> : ""}
+      </div>
+
+    </>
+
   );
 };
 

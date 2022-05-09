@@ -3,7 +3,11 @@ import { useEffect, useRef, useState, createRef } from 'react';
 import React from 'react'
 import Entity from './Entity'
 import Tooltip from './Tooltip'
-import Preload from '../components/Preload'
+import Preload from './Preload'
+import useSound from 'use-sound';
+
+// import Audio from '../components/Audio'
+// import world from '../sounds/world.mp3';
 
 import {
     BiRightArrow,
@@ -47,6 +51,13 @@ const MapGrid = (props) => {
     const [tooltip, setTooltip] = useState({ content: "", pos: { x: 0, y: 0 }, entities: [{ name: "", level: -1 }], entity: { name: "", hp: 0 } })
 
     const [loading, setLoading] = useState(true);
+    const [percentage, setPercentage] = useState(0);
+    // const [audio, setAudio] = useState("");
+
+    const [playWorld] = useSound(
+        "/sounds/world.mp3",
+        { volume: 1 }
+      );
 
     const staticRef = useRef()
     const gridRef = useRef()
@@ -94,6 +105,7 @@ const MapGrid = (props) => {
     }
     const LifePointsVariation = payload => {
         socket.player.Fighters[payload.data.entityId].stats.lifePoints += payload.data.delta
+        // if(delta < 0) setAudio(payload.data.entityId == socket.player.entityId ? "receiveDamage" : "deliverDamage")
         if (payload.data.entityId == socket.player.entityId) {
             socket.eventEmitter.emit("CharacterStatsList", {
                 data: { stats: socket.player.Fighters[payload.data.entityId].stats }
@@ -119,6 +131,8 @@ const MapGrid = (props) => {
     }
 
     const FightStartingMessage = async payload => {
+        // setAudio("fight")
+        socket.player.isMoving = false;
         const t = staticRef.current.getContext('2d');
         t.clearRect(0, 0, staticRef.current.width, staticRef.current.height);
         await drawStatic("background", mapData.static.id, t)
@@ -269,20 +283,22 @@ const MapGrid = (props) => {
 
     const cellClicked = async (ev, direct = false) => {
         const index = !direct ? getIdFromMouseEvent(ev) : direct;
-        
+
         if ((!index && index != 0) || !isWalkable(mapData.static.cells[index])) return;
 
         if (socket.player.isFighting) {
             if (clickedSpell.range.includes(parseInt(index))) {
                 castSpell(parseInt(index))
-            } else socket.sendMessage("MovementRequestMessage", { cellId: index })
+            } else {
+                if (!socket.player.isMoving) socket.sendMessage("MovementRequestMessage", { cellId: index })
+            }
             fillGrid();
             setClickedSpell(r => ({
                 id: -1,
                 range: [],
                 los: []
             }))
-        } else socket.sendMessage("MovementRequestMessage", { cellId: index })
+        } else if (!socket.player.isMoving) socket.sendMessage("MovementRequestMessage", { cellId: index })
     }
 
     const changeMap = (direction) => {
@@ -318,6 +334,7 @@ const MapGrid = (props) => {
         else if (direction == "bottom") comingFrom = "top"
         socket.eventEmitter.once("ChangeMapNow", () => {
             setLoading(true);
+            setPercentage(0);
             socket.sendMessage("MapDataRequestMessage", {
                 id: neighborId,
                 comingFrom
@@ -331,7 +348,7 @@ const MapGrid = (props) => {
         const index = !direct ? getIdFromMouseEvent(ev) : direct;
         if ((index || index == 0) && isWalkable(mapData.static.cells[index])) {
             gridRef.current.style.cursor = "pointer"
-            
+
             if (socket.player.isFighting) {
                 if (socket.player.ourTurn) {
                     if (clickedSpell.range.length == 0) {
@@ -500,7 +517,9 @@ const MapGrid = (props) => {
     }
     const fillStatic = async (t, players, monsters) => {
         setLoading(true)
+        setPercentage(0)
         setEntities(entities => [])
+
         await drawStatic("background", mapData.static.id, t)
         for (const cellId in mapData.static.cells) {
             const cell = mapData.static.cells[cellId]
@@ -530,6 +549,7 @@ const MapGrid = (props) => {
                 // t.fill()
                 // t.stroke()
             }
+            setPercentage(Math.round(parseInt(cellId) * 100 / mapData.static.cells.length));
 
         }
 
@@ -542,9 +562,11 @@ const MapGrid = (props) => {
             addMonsterGroup(monsterGroup)
         }
         setLoading(false)
+        playWorld()
     }
     useEffect(() => {
         setEntities([])
+
         if (!mapData.static.id) return;
         const staticCanvas = staticRef.current;
         staticCanvas.style.visibility = "visible"
@@ -575,10 +597,18 @@ const MapGrid = (props) => {
                 if (!entitiesRef.current[data.entityId]) return;
                 if (data.entityId == socket.player.entityId) {
                     socket.player.cellId = data.path[data.path.length - 1]
+                    setEntities(e => {
+                        return e.map(el => {
+                            if(el.entityId == data.entityId) el.cellId = data.path[data.path.length - 1]
+                            return el;
+                        })
+                    })
                 }
                 for (const cell of data.path) {
                     if (!entitiesRef.current[data.entityId]) return;
+                    if (data.entityId == socket.player.entityId) socket.player.isMoving = true;
                     await entitiesRef.current[data.entityId].move(canvasOriginPoints[cell].x, canvasOriginPoints[cell].y)
+                    if (data.entityId == socket.player.entityId) socket.player.isMoving = false;
                 }
 
                 if (!socket.player.isFighting) socket.eventEmitter.emit("ChangeMapNow")
@@ -608,7 +638,7 @@ const MapGrid = (props) => {
 
     return (
         <div className={styles.mapContainer} ref={containerRef}>
-
+            {/* <Audio type={audio}/> */}
             <div className={styles.dummy}>
                 <Tooltip entities={tooltip.entities} pos={tooltip.pos} content={tooltip.content} entity={tooltip.entity} />
                 {entities.map((e, i) => (
@@ -642,7 +672,7 @@ const MapGrid = (props) => {
             <div className={`${styles.changeMap} ${styles.top}`} ref={changeTop} onClick={() => changeMap("top")}>
                 <BiUpArrow />
             </div>
-            {loading ? <Preload /> : <></>}
+            {loading ? <Preload p = {percentage} /> : ""}
 
         </div>
 

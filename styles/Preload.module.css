@@ -1,5 +1,6 @@
 .preload {
   display: flex;
+  flex-direction: column;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -11,7 +12,11 @@
   height:256px;
 
   animation: fade 2.5s linear infinite;
- 
+}
+.preload p {
+  font-size:60px;
+  text-align: center;
+  margin: -30px;
 }
 @keyframes fade {
   0%,100% { opacity: 0.5 }
