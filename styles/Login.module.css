@@ -40,7 +40,7 @@
   border: 2px solid black;
 }
 
-.forms button {
+.forms button, .welcome button {
   text-transform: uppercase;
   outline: 0;
   background: black;
@@ -53,11 +53,11 @@
   font-family: inherit;
 }
 
-.forms button:hover {
+.forms button:hover, .welcome button:hover {
   background: rgba(0, 0, 0, 0.8);
 }
 
-.forms button:active {
+.forms button:active, .welcome button:active {
   background: rgba(0, 0, 0, 0.8);
   border: 1px solid white;
 }
@@ -73,4 +73,11 @@
 
 .err {
   color: red;
+}
+
+.welcome {
+  display:absolute;
+  width:80vw;
+  height:80vw;
+  font-size:200%;
 }

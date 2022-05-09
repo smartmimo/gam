@@ -12,6 +12,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false)
     const [loginError, setLogErr] = useState("")
     const [registerError, setRegErr] = useState("")
+    const [welcome, setWelcome] = useState(true)
     const cb1 = e => {
         e.preventDefault();
         if (!e.target.children[0].value || !e.target.children[1].value) return setLogErr("Please fill all the fields.")
@@ -57,6 +58,10 @@ export default function Home() {
 
     return (
         <div className={styles.container}>
+            {welcome ? <div className={styles.welcome}>
+                <p>Cheb Laarbi just woke up and chose violence... He started an invasion on the aliens. Of course they're fighting back so this is your chance to <b>INDIRECTLY INTERACT</b> with other players to stop the invasion and save the aliens. Best of luck to you!
+                </p><button onClick = {()=>setWelcome(false)}>Let's go</button>
+            </div> :<></>}
             <h1>
                 Welcome to Aliens VS Cheb Laarbi.. Can you stop the invasion?
             </h1>

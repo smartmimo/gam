@@ -265,7 +265,7 @@ const Controls = () => {
                 </div>
                 <div className={styles.milestone}>
                     <p>{milestone.text}</p>
-                    <p>Pogress: {milestone.progress} / 200</p>
+                    <p>Progress: {milestone.progress} / 200</p>
                 </div>
             </div>
         </>
