@@ -7,7 +7,10 @@ import Preload from './Preload'
 import useSound from 'use-sound';
 
 // import Audio from '../components/Audio'
-// import world from '../sounds/world.mp3';
+import world from '../sounds/world.mp3';
+import fight from '../sounds/fight.mp3';
+import receiveDamage from '../sounds/rcvDmg.mp3';
+import deliverDamage from '../sounds/dlvrDmg.mp3';
 
 import {
     BiRightArrow,
@@ -52,12 +55,46 @@ const MapGrid = (props) => {
 
     const [loading, setLoading] = useState(true);
     const [percentage, setPercentage] = useState(0);
-    // const [audio, setAudio] = useState("");
 
-    const [playWorld] = useSound(
-        "/sounds/world.mp3",
-        { volume: 1 }
-      );
+    const [playWorldFunction, { stop: stopWorldFunction }] = useSound(
+        world,
+        {
+            volume: 0.5,
+            onend: () => {
+                stopWorld();
+                playWorld();
+            }
+        }
+    );
+
+    const playWorld = () => {
+        if (socket.player.worldPlaying) return;
+        playWorldFunction()
+        socket.player.worldPlaying = true
+    }
+
+    const stopWorld = () => {
+        stopWorldFunction()
+        socket.player.worldPlaying = false;
+    }
+
+    const [playFight, { stop: stopFight }] = useSound(
+        fight,
+        {
+            volume: 0.5,
+            onend: () => {
+                playFight();
+            }
+        }
+    );
+    const [playDDmg] = useSound(
+        deliverDamage,
+        { volume: 4 }
+    );
+    const [playRDmg] = useSound(
+        receiveDamage,
+        { volume: 4 }
+    );
 
     const staticRef = useRef()
     const gridRef = useRef()
@@ -105,7 +142,7 @@ const MapGrid = (props) => {
     }
     const LifePointsVariation = payload => {
         socket.player.Fighters[payload.data.entityId].stats.lifePoints += payload.data.delta
-        // if(delta < 0) setAudio(payload.data.entityId == socket.player.entityId ? "receiveDamage" : "deliverDamage")
+        if (payload.data.delta < 0) socket.player.entityId == payload.data.entityId ? playRDmg() : playDDmg()
         if (payload.data.entityId == socket.player.entityId) {
             socket.eventEmitter.emit("CharacterStatsList", {
                 data: { stats: socket.player.Fighters[payload.data.entityId].stats }
@@ -119,6 +156,7 @@ const MapGrid = (props) => {
     const FightEndMessage = payload => {
         delete socket.player.Fighters
         socket.player.isFighting = false;
+        stopFight()
         socket.sendMessage("MapDataRequestMessage", {
             id: mapData.static.id
         })
@@ -131,7 +169,8 @@ const MapGrid = (props) => {
     }
 
     const FightStartingMessage = async payload => {
-        // setAudio("fight")
+        stopWorld()
+        playFight()
         socket.player.isMoving = false;
         const t = staticRef.current.getContext('2d');
         t.clearRect(0, 0, staticRef.current.width, staticRef.current.height);
@@ -562,8 +601,13 @@ const MapGrid = (props) => {
             addMonsterGroup(monsterGroup)
         }
         setLoading(false)
+
+        stopFight()
         playWorld()
     }
+
+
+
     useEffect(() => {
         setEntities([])
 
@@ -599,7 +643,7 @@ const MapGrid = (props) => {
                     socket.player.cellId = data.path[data.path.length - 1]
                     setEntities(e => {
                         return e.map(el => {
-                            if(el.entityId == data.entityId) el.cellId = data.path[data.path.length - 1]
+                            if (el.entityId == data.entityId) el.cellId = data.path[data.path.length - 1]
                             return el;
                         })
                     })
@@ -672,7 +716,7 @@ const MapGrid = (props) => {
             <div className={`${styles.changeMap} ${styles.top}`} ref={changeTop} onClick={() => changeMap("top")}>
                 <BiUpArrow />
             </div>
-            {loading ? <Preload p = {percentage} /> : ""}
+            {loading ? <Preload p={percentage} /> : ""}
 
         </div>
 
