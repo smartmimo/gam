@@ -59,7 +59,7 @@ export default function Home() {
     return (
         <div className={styles.container}>
             {welcome ? <div className={styles.welcome}>
-                <p>Cheb Laarbi just woke up and chose violence... He started an invasion on the aliens. Of course they're fighting back so this is your chance to <b>INDIRECTLY INTERACT</b> with other players to stop the invasion and save the aliens. Best of luck to you!
+                <p>Cheb Laarbi just woke up and chose violence... He started an invasion on the aliens. Of course they are fighting back so this is your chance to <b>INDIRECTLY INTERACT</b> with other players to stop the invasion and save the aliens. Best of luck to you!
                 </p><button onClick = {()=>setWelcome(false)}>Lets go</button>
             </div> :<></>}
             <h1>
