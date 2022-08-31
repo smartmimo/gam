@@ -62,12 +62,12 @@ const Tooltip = ({ pos = { x: 0, y: 0 }, content = "", entities = [{ name: "", l
 
                     (entities.length > 1 || entities[0].name == "Cheb Laarbi") ?
                         entities.map((e, i) => (
-                            <p key={i} className={styles.oneliner}>{e.name} <span>(Niv. {e.level})</span></p>
+                            <p key={i} className={styles.oneliner}>{e.name} <span>(Level {e.level})</span></p>
                         )) :
                         (
                             <>
                                 <p className={styles.name}>{entities[0].name}</p>
-                                <p className={styles.level}>Niv. <span>{entities[0].level}</span></p>
+                                <p className={styles.level}>Level <span>{entities[0].level}</span></p>
                             </>
                         )
             }

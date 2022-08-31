@@ -59,7 +59,7 @@ const MapGrid = (props) => {
     const [playWorldFunction, { stop: stopWorldFunction }] = useSound(
         world,
         {
-            volume: 0.5,
+            volume: 1,
             onend: () => {
                 stopWorld();
                 playWorld();
